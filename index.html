@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>official-site.ai — Founders with Agency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IBM+Plex+Mono:wght@300;400;500&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #080808;
+      --bg-card:    #0f0f0f;
+      --bg-card2:   #141414;
+      --gold:       #C8972A;
+      --gold-light: #E5B84A;
+      --gold-dim:   rgba(200, 151, 42, 0.15);
+      --gold-border:rgba(200, 151, 42, 0.25);
+      --text:       #FFFFFF;
+      --text-muted: #7A7A7A;
+      --text-dim:   #AAAAAA;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 3rem;
+      border-bottom: 1px solid var(--gold-border);
+      background: rgba(8,8,8,0.88);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .logo-hex {
+      width: 32px;
+      height: 32px;
+    }
+
+    .logo-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,151,42,0.08) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--gold);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      line-height: 1.05;
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.4s;
+    }
+
+    .hero-title .dot {
+      color: var(--gold);
+    }
+
+    .hero-title .tld {
+      color: var(--gold);
+      font-weight: 400;
+    }
+
+    .hero-tagline {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.3em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.55s;
+    }
+
+    .hero-products {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.7s;
+    }
+
+    .hero-product-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+
+    .hero-product-pill::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .hero-product-pill.live::before { background: #4ade80; }
+
+    .hero-cta {
+      display: inline-block;
+      padding: 0.85rem 2.5rem;
+      background: var(--gold);
+      color: #000;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.85s;
+    }
+
+    .hero-cta:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: var(--gold);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--gold-border);
+    }
+
+    /* ── PRODUCTS ── */
+    #products {
+      padding: 6rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .product-card {
+      background: var(--bg-card);
+      border: 1px solid var(--gold-border);
+      padding: 2rem;
+      position: relative;
+      transition: border-color 0.25s, transform 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .product-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-3px);
+    }
+
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 0;
+      background: var(--gold);
+      transition: height 0.3s ease;
+    }
+
+    .product-card:hover::before { height: 100%; }
+
+    .product-status {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid;
+      margin-bottom: 1.25rem;
+    }
+
+    .product-status.live {
+      color: #4ade80;
+      border-color: rgba(74, 222, 128, 0.4);
+      background: rgba(74, 222, 128, 0.05);
+    }
+
+    .product-status.dev {
+      color: var(--gold);
+      border-color: var(--gold-border);
+      background: var(--gold-dim);
+    }
+
+    .product-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      color: var(--text);
+    }
+
+    .product-role {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .product-desc {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.65;
+      margin-bottom: 1.25rem;
+    }
+
+    .product-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .product-link::after {
+      content: '→';
+      transition: transform 0.2s;
+    }
+
+    .product-card:hover .product-link::after { transform: translateX(4px); }
+
+    /* ── ABOUT ── */
+    #about {
+      padding: 6rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .about-inner {
+      border: 1px solid var(--gold-border);
+      padding: 3rem;
+      background: var(--bg-card);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-inner::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; right: -80px;
+      width: 250px;
+      height: 250px;
+      border: 1px solid var(--gold-border);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .about-text {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text-dim);
+      max-width: 720px;
+    }
+
+    .about-text strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .about-founder-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 2rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--gold);
+      text-decoration: none;
+      border: 1px solid var(--gold-border);
+      padding: 0.6rem 1.25rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .about-founder-link:hover {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      padding: 6rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .contact-heading {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .contact-heading span { color: var(--gold); }
+
+    .contact-sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 2rem;
+      font-style: italic;
+    }
+
+    .contact-email {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1rem;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 2.5rem;
+      transition: color 0.2s;
+    }
+
+    .contact-email:hover { color: var(--gold-light); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--gold-border);
+      padding: 1.75rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-copy {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-border) 30%, var(--gold-border) 70%, transparent);
+      margin: 0 3rem;
+    }
+
+    /* ── ANIMATION ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      #products, #about, #contact { padding: 4rem 1.5rem; }
+      .about-inner { padding: 2rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <svg class="logo-hex" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" fill="none" stroke="#C8972A" stroke-width="1.5"/>
+        <text x="20" y="24" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#C8972A" font-weight="500">OS</text>
+      </svg>
+      <span class="logo-text">official-site.ai</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="https://darin.official-site.ai">Founder</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <p class="hero-label">Agentic Ventures · Est. 2025</p>
+    <h1 class="hero-title">official-site<span class="dot">.</span><span class="tld">ai</span></h1>
+    <p class="hero-tagline">Founders with Agency</p>
+    <div class="hero-products">
+      <span class="hero-product-pill live">RedClaw</span>
+      <span class="hero-product-pill">AI4Claims</span>
+      <span class="hero-product-pill live">Global Trust Protocol</span>
+    </div>
+    <a href="#products" class="hero-cta">See Our Products</a>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PRODUCTS -->
+  <section id="products">
+    <p class="section-label">Currently Building</p>
+    <div class="products-grid">
+
+      <!-- RedClaw -->
+      <a class="product-card" href="https://redclaw.official-site.ai">
+        <div class="product-status live">Live</div>
+        <h2 class="product-name">RedClaw</h2>
+        <p class="product-role">Founder / Architect</p>
+        <p class="product-desc">
+          OpenClaw-as-a-Service. One-click managed AI agent deployments on dedicated hardware. 
+          Production-grade infrastructure for teams that need autonomous AI without vendor lock-in 
+          or data leaving their control.
+        </p>
+        <span class="product-link">redclaw.official-site.ai</span>
+      </a>
+
+      <!-- AI4Claims -->
+      <a class="product-card" href="https://ai4claims.official-site.ai">
+        <div class="product-status dev">In Dev</div>
+        <h2 class="product-name">AI4Claims</h2>
+        <p class="product-role">Founder / Technical Lead</p>
+        <p class="product-desc">
+          AI-powered veterans disability claims processing and advisory. Trained on VA regulations,
+          case precedent, and discharge documentation to maximize claim outcomes for the veterans 
+          who served this country.
+        </p>
+        <span class="product-link">ai4claims.official-site.ai</span>
+      </a>
+
+      <!-- GTP -->
+      <a class="product-card" href="https://gtp.official-site.ai">
+        <div class="product-status live">Live</div>
+        <h2 class="product-name">Global Trust Protocol</h2>
+        <p class="product-role">Co-Founder / Technical Architect</p>
+        <p class="product-desc">
+          Gold-backed autonomous financial operations platform. Bridging sovereign liquidity 
+          architecture with African market corridors. Multi-agent infrastructure targeting 
+          cross-border SMB financial access.
+        </p>
+        <span class="product-link">gtp.official-site.ai</span>
+      </a>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label">About</p>
+    <div class="about-inner">
+      <p class="about-text">
+        The future of software has <strong>agency</strong>. We believe the next generation of products 
+        won't just assist — they'll operate. <strong>official-site.ai</strong> is a portfolio of 
+        agentic ventures built on proprietary infrastructure with dedicated hardware, secure mesh networking, 
+        and autonomous AI coordination at the core.
+        <br /><br />
+        We're not bolting AI onto existing categories. We're building the tools, platforms, and protocols 
+        that let operators leverage autonomous agents for real-world outcomes — from 
+        <strong>veterans claims processing</strong> to <strong>gold-backed financial operations</strong> to 
+        <strong>managed AI infrastructure</strong>. Every product ships with enterprise-grade security and 
+        production-grade reliability.
+      </p>
+      <a class="about-founder-link" href="https://darin.official-site.ai">
+        About the Founder →
+      </a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-label" style="text-align:center; margin-bottom:2rem;">Get In Touch</p>
+    <h2 class="contact-heading">Contact <span>Darin Manley</span></h2>
+    <p class="contact-sub">For investor inquiries, partnership discussions, or build conversations.</p>
+    <a class="contact-email" href="mailto:darin@official-site.ai">darin@official-site.ai</a>
+    <p style="font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:var(--text-muted); letter-spacing:0.12em;">
+      Responses within 24–48 hours · All communications confidential
+    </p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-copy">© 2026 OFFICIAL-SITE.AI · EST. 2025 · <span style="color:var(--gold);">PATENT PENDING</span></span>
+    <ul class="footer-links">
+      <li><a href="https://redclaw.official-site.ai">RedClaw</a></li>
+      <li><a href="https://ai4claims.official-site.ai">AI4Claims</a></li>
+      <li><a href="https://gtp.official-site.ai">GTP</a></li>
+      <li><a href="https://darin.official-site.ai">Team</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </footer>
+
+</body>
+</html>
