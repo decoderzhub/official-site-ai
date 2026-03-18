@@ -349,9 +349,39 @@
     .about-inner {
       border: 1px solid var(--gold-border);
       padding: 3rem;
+      padding-bottom: 5rem;
       background: var(--bg-card);
       position: relative;
       overflow: hidden;
+    }
+    /* About section founder photo — inside card, bottom-right corner */
+    .about-founder-photo {
+      position: absolute;
+      bottom: -25px;
+      right: -50px;
+      z-index: 10;
+      width: 220px;
+      height: 220px;
+    }
+    .about-porthole {
+      width: 220px;
+      height: 220px;
+      border-radius: 50% !important;
+      overflow: hidden !important;
+      border: 2px solid rgba(200,151,42,0.6);
+      box-shadow: 0 0 0 4px rgba(200,151,42,0.15);
+      position: relative;
+    }
+    .about-porthole img {
+      position: absolute;
+      width: 160%;
+      height: 160%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -38%);
+      object-fit: cover;
+      display: block;
+      filter: grayscale(100%);
     }
 
     .about-inner::after {
@@ -585,6 +615,13 @@
   <section id="about">
     <p class="section-label">About</p>
     <div class="about-inner">
+
+      <div class="about-founder-photo">
+        <div class="about-porthole">
+          <img src="/assets/darin.jpg" alt="Darin Manley" />
+        </div>
+      </div>
+    
       <p class="about-text">
         The future of software has <strong>agency</strong>. We believe the next generation of products 
         won't just assist — they'll operate. <strong>official-site.ai</strong> is a portfolio of 
