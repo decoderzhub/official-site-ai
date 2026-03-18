@@ -397,6 +397,20 @@
       background: var(--gold-dim);
       border-color: var(--gold);
     }
+    .about-photo {
+      position: absolute;
+      top: 50%;
+      right: 3rem;
+      transform: translateY(-50%);
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center top;
+      border: 3px solid var(--gold);
+      box-shadow: 0 0 30px rgba(200, 151, 42, 0.3);
+    }
+
 
     /* ── CONTACT ── */
     #contact {
@@ -597,6 +611,7 @@
         <strong>managed AI infrastructure</strong>. Every product ships with enterprise-grade security and 
         production-grade reliability.
       </p>
+      <img class="about-photo" src="/darin-headshot.jpg" alt="Darin Manley" />
       <a class="about-founder-link" href="https://darin.official-site.ai">
         About the Founder →
       </a>
